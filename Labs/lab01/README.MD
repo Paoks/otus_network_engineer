@@ -1,4 +1,4 @@
-#### Configure Router-on-a-Stick Inter-VLAN Routing
+### Configure Router-on-a-Stick Inter-VLAN Routing
 
 Добавление сетей VLAN и назначение портов.
 
@@ -29,3 +29,21 @@ VLAN | Name | Назначенные интерфейсы
  4  | Operations |  S2: e0/2
 7| ParkingLot | All unused
 8 | Native | N\A 
+
+
+### Решение:
+##### Создание Vlans и назначение на порты
+![](S1-vlans.png)
+![](S2-vlans.png)
+
+##### Конфигурирование транковых портов
+![](S1-Trunk.png)
+![](S2-Trunk.png)
+
+##### Конфигурирование Inter-VLAN Routing
+![](Inter-VLAN-Routing.png)
+
+
+##### Финальная проверка связанности пинг PC-A - PC-B
+![](PC-A.png)
+![](PC-B.png)
