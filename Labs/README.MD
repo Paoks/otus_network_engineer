@@ -3,4 +3,4 @@
 0. [Lab 0. Вводная документация](lab00/).
 1. [Lab 1. VLAN](lab01/).
 2. [Lab 2. STP](lab02/)
-3. [Lab 2. DHCPv4\v6](lab03/).
+3. [Lab 3. DHCPv4\v6](lab03/).
