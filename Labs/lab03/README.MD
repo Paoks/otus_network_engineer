@@ -189,6 +189,22 @@ R2:
 
 
 ##### Step 8: Настроить на R1 DHCPv6 stateless на выдачу DNS и Domain information
-На R1 
+На R1 создаем DHCPv6 pool c настройками  DNS и Domain information
 
-##### Step 9: Настройка DHCPv6 сервера на R1
+    ipv6 dhcp pool R1-Stateless
+    dns-server 2001:db8:acad::254
+    domain-name otus.ru
+
+Назначаем pool на интерфейс где будут радаватся настройки и включаем флаг O 
+
+    int e 0/1.100
+    ipv6 nd other-config-flag
+    ipv6 dhcp server R1-Stateless
+
+Проверяем настройки на нтерфейсе
+![](Step8-R1.1.png)
+
+Проверяем результат на PC-A
+
+
+##### Step 9: Настройка DHCPv6 stateful на R1
