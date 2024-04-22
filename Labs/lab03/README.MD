@@ -146,6 +146,7 @@ PC-B | NIC | DHCP  | DHCP | DHCP
     ip helper-address 10.0.0.1
 
 Проверем получение IP на PC-B
+
 ![](Step5-PCB.png)
 
 Проверяем статистику DHCP пулов на R1
