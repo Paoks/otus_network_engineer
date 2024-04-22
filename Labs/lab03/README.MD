@@ -186,6 +186,7 @@ R2:
 Проверям настройки Router Advertisement, сейчас включен флаг A
 ![](Step7-R1.png)
 Проверяем какой  IP получил PC-A
+
 ![](Step7-PCA.png)
 
 
@@ -203,6 +204,7 @@ R2:
     ipv6 dhcp server R1-Stateless
 
 Проверяем настройки на нтерфейсе
+
 ![](Step8-R1.1.png)
 
 Проверяем результат на PC-A
