@@ -208,3 +208,25 @@ R2:
 
 
 ##### Step 9: Настройка DHCPv6 stateful на R1
+
+Создаем DHCPv6 pool на R1
+
+    ipv6 dhcp pool R2-STATEFUL
+    address prefix 2001:db8:acad:3:aaa::/80
+    dns-server 2001:db8:acad::254
+    domain-name otus.ru
+
+Назаначем pool на интерфейс смотрящий в сторону R2 e0/0
+
+    int e 0/0
+    ipv6 dhcp server R2-Stateful
+
+Создаем DHCPv6 Relay на R2  на интерфейсе e0/1 смотрящего в сторону клиентов, и включаем флаг "M"
+
+    int e 0/1
+    ipv6 nd managed-config-flag
+    ipv6 dhcp relay destination 2001:db8:acad:2::1 e0/0
+
+Проверяем настройки интерфейса
+
+![](Step9-R2.png)
