@@ -4,3 +4,4 @@
 1. [Lab 1. VLAN](lab01/).
 2. [Lab 2. STP](lab02/)
 3. [Lab 3. DHCPv4\v6](lab03/).
+4. [Lab 4. Архитектура сети](lab04/).
