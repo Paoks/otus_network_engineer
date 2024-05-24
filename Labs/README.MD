@@ -5,3 +5,4 @@
 2. [Lab 2. STP](lab02/)
 3. [Lab 3. DHCPv4\v6](lab03/).
 4. [Lab 4. Архитектура сети](lab04/).
+5. [Lab 5. PBR и SLA](lab05/).
