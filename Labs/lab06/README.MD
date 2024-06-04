@@ -177,6 +177,32 @@ R19
 
 4) Маршрутизатор R20 находится в зоне 102 и получает все маршруты, кроме маршрутов до сетей зоны 101.
 
+Делаем базовую настройку OSPF на R20
+
+    R19(config)#router ospf 1
+    R19(config-router)#router-id 172.20.0.20
+    R19(config-router)#passive-interface default
+    R19(config-router)#no passive-interface ethernet 0/0
+    R19(config-router)#interface ethernet 0/0
+    R19(config-if)#ip ospf 1 area 0
+    R19(config-if)#interface Loopback0
+    R19(config-if)#ip ospf 1 area 102
+
+т.к. R20 по топологии у нас ABR и смотрит в Area 0 и 102, то маршрут до Area 101 на этом маргрутизаторе будет все время в таблице маршрутиации, будем смотреть фильтрацию маршрутов в LSA Type 3, сейчас маршрут до 172.20.0.19/32 есть в Area 0 и Area 102
+
+![](Step4-1.png)
+
+Далее нужно настроить фильтрацию маршрутов и запретить подсеть 172.20.0.19\32 из Area 101
+
+    R20(config)#ip prefix-list Filter-Area-101 seq 5 deny 172.20.0.19/32
+    R20(config)#ip prefix-list Filter-Area-101 seq 50 permit 0.0.0.0/32 le 32
+    R20(config)#router ospf 1
+    R20(config)#
+    R20(config-router)#area 102 filter-list prefix Filter-Area-101 in
+
+Проверяем фильтрацию
+
+![](Step4-2.png)
 
 
 
