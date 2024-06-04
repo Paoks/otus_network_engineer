@@ -205,6 +205,31 @@ R19
 ![](Step4-2.png)
 
 
+#### Настройка OSPF для IPv6
 
+В целом настройки аналогины настройкам для IPv4, расмотрим на примере роутера R14
 
+R14
+
+    ipv6 route ::/0 2001:0:A:1::3 name to_Kitoron
+    ipv6 router ospf 10
+    router-id 172.20.0.14
+    default-information originate
+    passive-interface default
+    no passive-interface Ethernet0/0
+    no passive-interface Ethernet0/1
+    no passive-interface Ethernet0/3
+
+    interface Loopback0
+    ipv6 ospf 10 area 0
+    interface Ethernet0/0
+    ipv6 ospf 10 area 0
+    interface Ethernet0/1
+    ipv6 ospf 10 area 0
+    interface Ethernet0/3
+    ipv6 ospf 10 area 0
+
+Для остальных устройств в целом кон-ии похожи.
+
+[Конфигурация оборудования](Config/).
 
