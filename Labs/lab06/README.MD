@@ -118,23 +118,23 @@
 
 Настройки OSPF на SW4
 
-    SW5(config)#router ospf 1
-    SW5(config-router)#router-id 172.20.0.33
-    SW5(config-router)#passive-interface default
-    SW5(config-router)#no passive-interface Ethernet1/0
-    SW5(config-router)#no passive-interface Ethernet1/1
-    SW5(config-router)#no passive-interface Vlan100
-    SW5(config-router)#no passive-interface Vlan101
-    SW5(config)#interface ethernet 1/0
-    SW5(config-if)#ip ospf 1 area 10
-    SW5(config)#interface ethernet 1/1
-    SW5(config-if)#ip ospf 1 area 10
-    SW5(config-if)#interface vlan 100
-    SW5(config-if)#ip ospf 1 area 10
-    SW5(config-if)#interface vlan 101
-    SW5(config-if)#ip ospf 1 area 10
-    SW5(config-if)#interface vlan 1000
-    SW5(config-if)#ip ospf 1 area 10
+    SW4(config)#router ospf 1
+    SW4(config-router)#router-id 172.20.0.33
+    SW4(config-router)#passive-interface default
+    SW4(config-router)#no passive-interface Ethernet1/0
+    SW4(config-router)#no passive-interface Ethernet1/1
+    SW4(config-router)#no passive-interface Vlan100
+    SW4(config-router)#no passive-interface Vlan101
+    SW4(config)#interface ethernet 1/0
+    SW4(config-if)#ip ospf 1 area 10
+    SW4(config)#interface ethernet 1/1
+    SW4(config-if)#ip ospf 1 area 10
+    SW4(config-if)#interface vlan 100
+    SW4(config-if)#ip ospf 1 area 10
+    SW4(config-if)#interface vlan 101
+    SW4(config-if)#ip ospf 1 area 10
+    SW4(config-if)#interface vlan 1000
+    SW4(config-if)#ip ospf 1 area 10
 
 Добавим на R14 и R15 Static Route и отправку маршрута по умолчанию
 
@@ -179,14 +179,14 @@ R19
 
 Делаем базовую настройку OSPF на R20
 
-    R19(config)#router ospf 1
-    R19(config-router)#router-id 172.20.0.20
-    R19(config-router)#passive-interface default
-    R19(config-router)#no passive-interface ethernet 0/0
-    R19(config-router)#interface ethernet 0/0
-    R19(config-if)#ip ospf 1 area 0
-    R19(config-if)#interface Loopback0
-    R19(config-if)#ip ospf 1 area 102
+    R20(config)#router ospf 1
+    R20(config-router)#router-id 172.20.0.20
+    R20(config-router)#passive-interface default
+    R20(config-router)#no passive-interface ethernet 0/0
+    R20(config-router)#interface ethernet 0/0
+    R20(config-if)#ip ospf 1 area 0
+    R20(config-if)#interface Loopback0
+    R20(config-if)#ip ospf 1 area 102
 
 т.к. R20 по топологии у нас ABR и смотрит в Area 0 и 102, то маршрут до Area 101 на этом маргрутизаторе будет все время в таблице маршрутиации, будем смотреть фильтрацию маршрутов в LSA Type 3, сейчас маршрут до 172.20.0.19/32 есть в Area 0 и Area 102
 
