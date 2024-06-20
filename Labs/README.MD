@@ -7,3 +7,4 @@
 4. [Lab 4. Архитектура сети](lab04/).
 5. [Lab 5. PBR и SLA](lab05/).
 6. [Lab 6. OSPF](lab06/).
+7. [Lab 7. IS-IS](lab07/).
