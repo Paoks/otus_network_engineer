@@ -1,0 +1,187 @@
+
+Building configuration...
+
+Current configuration : 2707 bytes
+!
+! Last configuration change at 08:26:49 UTC Thu Jul 4 2024
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname R16
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+
+
+!
+!
+!
+!
+no ip domain lookup
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+key chain SPB-EIGRP
+ key 1
+  key-string SBB$ecret
+!
+!
+!
+!
+!
+!
+!
+!
+redundancy
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ ip address 172.20.4.16 255.255.255.255
+ ipv6 address FE80::12 link-local
+ ipv6 address 2001:0:A:2::B:10/128
+ ipv6 enable
+!
+interface Ethernet0/0
+ description to_SW10
+ ip address 172.20.4.141 255.255.255.252
+ ipv6 address FE80::10 link-local
+ ipv6 address 2001:0:A:2::A:6/127
+ ipv6 enable
+!
+interface Ethernet0/1
+ description to_R18
+ ip address 172.20.4.134 255.255.255.252
+ ipv6 address FE80::10 link-local
+ ipv6 address 2001:0:A:2::A:3/127
+ ipv6 enable
+!
+interface Ethernet0/2
+ description to_SW9
+ ip address 172.20.4.149 255.255.255.252
+ ipv6 address FE80::10 link-local
+ ipv6 address 2001:0:A:2::A:8/127
+ ipv6 enable
+!
+interface Ethernet0/3
+ description to_R32
+ ip address 172.20.4.137 255.255.255.252
+ ipv6 address FE80::10 link-local
+ ipv6 address 2001:0:A:2::A:4/127
+ ipv6 enable
+!
+!
+router eigrp SBP
+ !
+ address-family ipv4 unicast autonomous-system 4
+  !
+  af-interface default
+   authentication mode md5
+   authentication key-chain SPB-EIGRP
+   passive-interface
+  exit-af-interface
+  !
+  af-interface Ethernet0/1
+   summary-address 172.20.4.0 255.255.255.0
+   no passive-interface
+  exit-af-interface
+  !
+  af-interface Ethernet0/3
+   summary-address 0.0.0.0 0.0.0.0
+   no passive-interface
+  exit-af-interface
+  !
+  topology base
+  exit-af-topology
+  network 172.20.4.16 0.0.0.0
+  network 172.20.4.132 0.0.0.3
+  network 172.20.4.136 0.0.0.3
+  network 172.20.4.140 0.0.0.3
+  network 172.20.4.148 0.0.0.3
+  eigrp router-id 172.20.4.16
+ exit-address-family
+ !
+ address-family ipv6 unicast autonomous-system 6
+  !
+  af-interface default
+   authentication mode md5
+   authentication key-chain SPB-EIGRP
+   passive-interface
+  exit-af-interface
+  !
+  af-interface Ethernet0/1
+   no passive-interface
+  exit-af-interface
+  !
+  af-interface Ethernet0/3
+   summary-address ::/0
+   no passive-interface
+  exit-af-interface
+  !
+  topology base
+  exit-af-topology
+  eigrp router-id 172.20.4.16
+ exit-address-family
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+!
+line con 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ login
+ transport input none
+!
+!
+end

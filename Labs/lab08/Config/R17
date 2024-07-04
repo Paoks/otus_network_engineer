@@ -1,0 +1,173 @@
+Building configuration...
+
+Current configuration : 2368 bytes
+!
+! Last configuration change at 07:54:37 UTC Thu Jul 4 2024
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname R17
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+
+
+!
+!
+!
+!
+no ip domain lookup
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+key chain SPB-EIGRP
+ key 1
+  key-string SBB$ecret
+!
+!
+!
+!
+!
+!
+!
+!
+redundancy
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ description MGMT
+ ip address 172.20.4.17 255.255.255.255
+ ipv6 address FE80::11 link-local
+ ipv6 address 2001:0:A:2::B:11/128
+ ipv6 enable
+!
+interface Ethernet0/0
+ description to_SW9
+ ip address 172.20.4.145 255.255.255.252
+ ipv6 address FE80::11 link-local
+ ipv6 address 2001:0:A:2::A:A/127
+ ipv6 enable
+!
+interface Ethernet0/1
+ description to_R18
+ ip address 172.20.4.130 255.255.255.252
+ ipv6 address FE80::11 link-local
+ ipv6 address 2001:0:A:2::A:3/127
+ ipv6 enable
+!
+interface Ethernet0/2
+ description to_SW10
+ ip address 172.20.4.153 255.255.255.252
+ ipv6 address FE80::11 link-local
+ ipv6 address 2001:0:A:2::A:C/127
+ ipv6 enable
+!
+interface Ethernet0/3
+ no ip address
+ shutdown
+!
+!
+router eigrp SBP
+ !
+ address-family ipv4 unicast autonomous-system 4
+  !
+  af-interface default
+   authentication mode md5
+   authentication key-chain SPB-EIGRP
+   passive-interface
+  exit-af-interface
+  !
+  af-interface Ethernet0/1
+   summary-address 172.20.4.0 255.255.255.0
+   no passive-interface
+  exit-af-interface
+  !
+  topology base
+  exit-af-topology
+  network 172.20.4.17 0.0.0.0
+  network 172.20.4.128 0.0.0.3
+  network 172.20.4.144 0.0.0.3
+  network 172.20.4.152 0.0.0.3
+  eigrp router-id 172.20.4.17
+ exit-address-family
+ !
+ address-family ipv6 unicast autonomous-system 6
+  !
+  af-interface default
+   authentication mode md5
+   authentication key-chain SPB-EIGRP
+   passive-interface
+  exit-af-interface
+  !
+  af-interface Ethernet0/1
+   no passive-interface
+  exit-af-interface
+  !
+  topology base
+  exit-af-topology
+  eigrp router-id 172.20.4.17
+ exit-address-family
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+!
+line con 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ login
+ transport input none
+!
+!
+end
