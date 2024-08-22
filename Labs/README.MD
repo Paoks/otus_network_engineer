@@ -9,3 +9,5 @@
 6. [Lab 6. OSPF](lab06/).
 7. [Lab 7. IS-IS](lab07/).
 8. [Lab 8. EIGRP](lab08/).
+9. [Lab 9. BGP основы](lab09/).
+10. [Lab 10. iBGP](lab10/).
