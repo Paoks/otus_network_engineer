@@ -1,0 +1,188 @@
+Building configuration...
+
+Current configuration : 3202 bytes
+!
+! Last configuration change at 12:25:02 UTC Thu Aug 29 2024
+! NVRAM config last updated at 12:25:03 UTC Thu Aug 29 2024
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname R15
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+
+
+!
+!
+!
+!
+no ip domain lookup
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+!
+redundancy
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ description MGMT
+ ip address 172.20.0.15 255.255.255.255
+ ip ospf 1 area 0
+ ipv6 address FE80::F link-local
+ ipv6 address 2001:0:A:1::B:2/128
+ ipv6 enable
+ ipv6 ospf 10 area 0
+!
+interface Loopback1
+ ip address 100.0.30.1 255.255.255.0
+ ip ospf 1 area 0
+!
+interface Ethernet0/0
+ description to_R13
+ ip address 172.20.0.141 255.255.255.252
+ ip nat inside
+ ip virtual-reassembly in
+ ip ospf 1 area 0
+ ipv6 address FE80::F link-local
+ ipv6 address 2001:0:A:1::A:8/127
+ ipv6 enable
+ ipv6 ospf 10 area 0
+!
+interface Ethernet0/1
+ description to_R12
+ ip address 172.20.0.145 255.255.255.252
+ ip nat inside
+ ip virtual-reassembly in
+ ip ospf 1 area 0
+ ipv6 address FE80::F link-local
+ ipv6 address 2001:0:A:1::A:A/127
+ ipv6 enable
+ ipv6 ospf 10 area 0
+!
+interface Ethernet0/2
+ description to_Lamas
+ ip address 100.0.20.1 255.255.255.252
+ ip nat outside
+ ip virtual-reassembly in
+ ipv6 address FE80::F link-local
+ ipv6 address 2001:0:A:1::4/127
+ ipv6 enable
+!
+interface Ethernet0/3
+ description to_R20
+ ip address 172.20.0.49 255.255.255.252
+ ip nat inside
+ ip virtual-reassembly in
+ ip ospf 1 area 0
+ ipv6 address FE80::F link-local
+ ipv6 address 2001:0:A:1::A:C/127
+ ipv6 enable
+ ipv6 ospf 10 area 0
+!
+router ospf 1
+ router-id 172.20.0.15
+ passive-interface default
+ no passive-interface Ethernet0/0
+ no passive-interface Ethernet0/1
+ no passive-interface Ethernet0/3
+ default-information originate
+!
+router bgp 1001
+ bgp router-id 172.20.0.15
+ bgp log-neighbor-changes
+ bgp default local-preference 500
+ network 100.0.20.0 mask 255.255.255.252
+ network 100.0.30.0 mask 255.255.255.0
+ network 172.20.0.14 mask 255.255.255.255
+ network 172.20.0.15 mask 255.255.255.255
+ neighbor 100.0.20.2 remote-as 301
+ neighbor 172.20.0.14 remote-as 1001
+ neighbor 172.20.0.14 update-source Loopback0
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip nat pool MSK-NAT-POOL1 100.0.30.10 100.0.30.100 netmask 255.255.255.0
+ip nat inside source list 1 pool MSK-NAT-POOL1 overload
+ip nat inside source static 172.20.0.20 100.0.30.201
+ip nat inside source static tcp 172.20.0.19 23 100.0.30.202 2323 extendable
+ip route 0.0.0.0 0.0.0.0 100.0.20.2 name to_Lamas
+!
+ipv6 router ospf 10
+ router-id 172.20.0.15
+ default-information originate
+ passive-interface default
+ no passive-interface Ethernet0/0
+ no passive-interface Ethernet0/1
+ no passive-interface Ethernet0/3
+!
+!
+!
+access-list 1 permit 192.168.0.0 0.0.15.255
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+!
+line con 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ login
+ transport input ssh
+!
+ntp update-calendar
+ntp server 172.20.0.12
+ntp server 172.20.0.13
+!
+end

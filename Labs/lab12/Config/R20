@@ -1,0 +1,147 @@
+Building configuration...
+
+Current configuration : 1958 bytes
+!
+! Last configuration change at 12:25:22 UTC Thu Aug 29 2024
+! NVRAM config last updated at 12:25:23 UTC Thu Aug 29 2024
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname R20
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+
+
+!
+!
+!
+!
+no ip domain lookup
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+!
+redundancy
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ description MGMT
+ ip address 172.20.0.20 255.255.255.255
+ ip ospf 1 area 102
+ ipv6 address FE80::14 link-local
+ ipv6 address 2001:0:A:1::B:6/128
+ ipv6 enable
+ ipv6 ospf 10 area 102
+!
+interface Ethernet0/0
+ description to_R15
+ ip address 172.20.0.50 255.255.255.252
+ ip ospf 1 area 0
+ ipv6 address FE80::14 link-local
+ ipv6 address 2001:0:A:1::A:D/127
+ ipv6 enable
+ ipv6 ospf 10 area 0
+!
+interface Ethernet0/1
+ no ip address
+ shutdown
+!
+interface Ethernet0/2
+ no ip address
+ shutdown
+!
+interface Ethernet0/3
+ no ip address
+ shutdown
+!
+router ospf 1
+ router-id 172.20.0.20
+ area 102 filter-list prefix Filter-Area-101 in
+ passive-interface default
+ no passive-interface Ethernet0/0
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+!
+ip prefix-list Filter-Area-101 seq 5 deny 172.20.0.19/32
+ip prefix-list Filter-Area-101 seq 50 permit 0.0.0.0/0 le 32
+ipv6 router ospf 10
+ router-id 172.20.0.20
+ distribute-list prefix-list Fil~terV6-Area-101 in
+ passive-interface default
+ no passive-interface Ethernet0/0
+!
+!
+!
+ipv6 prefix-list Fil~terV6-Area-101 seq 5 deny 2001:0:A:1::B:5/128
+ipv6 prefix-list Fil~terV6-Area-101 seq 50 permit ::/0 le 128
+!
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+!
+line con 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ login
+ transport input none
+!
+ntp update-calendar
+ntp server 172.20.0.12
+ntp server 172.20.0.13
+!
+end
