@@ -1,0 +1,178 @@
+Building configuration...
+
+Current configuration : 2418 bytes
+!
+! Last configuration change at 08:03:50 UTC Thu Sep 19 2024
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname R27
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+
+
+!
+!
+!
+!
+no ip domain lookup
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+!
+redundancy
+!
+!
+!
+!
+!
+!
+!
+crypto isakmp policy 10
+ encr aes
+ authentication pre-share
+ group 2
+crypto isakmp key Otus! address 100.0.10.1
+crypto isakmp key Otus! address 100.0.20.1
+!
+!
+crypto ipsec transform-set GRE-IPSEC esp-3des esp-sha-hmac
+ mode transport
+!
+crypto ipsec profile PROTECT-GRE
+ set transform-set GRE-IPSEC
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ description MGMT
+ ip address 172.20.16.21 255.255.255.255
+ ipv6 address FE80::1B link-local
+ ipv6 address 2001:0:A:5::B:1B/112
+ ipv6 enable
+!
+interface Tunnel0
+ ip address 172.30.5.2 255.255.255.0
+ no ip redirects
+ ip mtu 1400
+ ip nhrp map multicast 100.0.20.1
+ ip nhrp map 172.30.5.1 100.0.20.1
+ ip nhrp network-id 1
+ ip nhrp nhs 172.30.5.1
+ ip tcp adjust-mss 1360
+ tunnel source 100.20.20.2
+ tunnel mode gre multipoint
+ tunnel key 1
+ tunnel protection ipsec profile PROTECT-GRE
+!
+interface Tunnel1
+ ip address 172.30.6.2 255.255.255.0
+ no ip redirects
+ ip mtu 1400
+ ip nhrp map multicast 100.0.10.1
+ ip nhrp map 172.30.6.1 100.0.10.1
+ ip nhrp network-id 11
+ ip nhrp nhs 172.30.6.1
+ ip tcp adjust-mss 1360
+ tunnel source 100.20.20.2
+ tunnel mode gre multipoint
+ tunnel key 11
+ tunnel protection ipsec profile PROTECT-GRE
+!
+interface Ethernet0/0
+ description to_Triada
+ ip address 100.20.20.2 255.255.255.252
+ ipv6 address FE80::1B link-local
+ ipv6 address 2001:0:A:3::5/127
+ ipv6 enable
+!
+interface Ethernet0/1
+ no ip address
+ shutdown
+!
+interface Ethernet0/2
+ no ip address
+ shutdown
+!
+interface Ethernet0/3
+ no ip address
+ shutdown
+!
+interface Ethernet1/0
+ no ip address
+ shutdown
+!
+interface Ethernet1/1
+ no ip address
+ shutdown
+!
+interface Ethernet1/2
+ no ip address
+ shutdown
+!
+interface Ethernet1/3
+ no ip address
+ shutdown
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip route 0.0.0.0 0.0.0.0 100.20.20.1
+!
+!
+!
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+!
+line con 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ login
+ transport input none
+!
+!
+end
